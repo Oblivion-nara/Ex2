@@ -47,6 +47,7 @@ public class ClientReciever extends Observable implements Runnable{
 	    		//Receive and handle requests appropriately
 	    		
     			String cont = getContents(message);
+    			System.out.println(message);
 	    		switch(getPrefix(message)){
 	    		case "message":
 	    			addMessage(cont);
@@ -98,10 +99,6 @@ public class ClientReciever extends Observable implements Runnable{
 			System.err.println("Somthing is breaking.");
 		}
 	    sender.interrupt();
-	}
-	
-	public static void removeOpponent(String opponent){
-		ClientReciever.opponents.remove(opponent);
 	}
 	
 	public static String getPrefix(String message){

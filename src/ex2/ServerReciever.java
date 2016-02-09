@@ -42,7 +42,6 @@ public class ServerReciever extends Thread{
 				case "quit":
 					aUser = getContents(message);
 					if(!aUser.equals(myUser)){
-						System.out.println(message);
 						allClients.getQueue(aUser).offer(prefix+": "+myUser);
 					}
 					break;

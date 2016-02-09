@@ -5,11 +5,13 @@ import java.util.Observable;
 public class NoughtsCrossesModel extends Observable
 {
 	private NoughtsCrosses oxo;
+	private int playerSymbol;
 	
-	public NoughtsCrossesModel(NoughtsCrosses oxo)
+	public NoughtsCrossesModel(NoughtsCrosses oxo,int playerSymbol)
 	{
 		super();
 		this.oxo = oxo;
+		this.playerSymbol = playerSymbol;
 	}
 	
 /**
@@ -65,4 +67,5 @@ Start a new game
 		setChanged();
 		notifyObservers();
 	}
+	
 }

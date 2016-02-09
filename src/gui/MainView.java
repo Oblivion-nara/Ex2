@@ -11,13 +11,13 @@ import javax.swing.JScrollPane;
 
 import ex2.ClientSender;
 
-public class Gui extends JComponent {
+public class MainView extends JComponent {
 	
 	public static String[] connectedUsers;
 	public static String[] userScores;
 	private boolean userView = true; 
 
-	public Gui() {
+	public MainView() {
 
 		super();
 
