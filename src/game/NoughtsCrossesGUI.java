@@ -38,7 +38,8 @@ public class NoughtsCrossesGUI
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 
-				ClientSender.addMessage("quiter: "+ClientReciever.getContents(start_opponent));
+		    	ClientReciever.removeOpponent(ClientReciever.getContents(start_opponent));
+				ClientSender.addMessage("quit: "+ClientReciever.getContents(start_opponent));
 		    	frame.dispose();
 		        
 		    }

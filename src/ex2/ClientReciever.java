@@ -3,7 +3,6 @@ package ex2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +21,7 @@ public class ClientReciever extends Observable implements Runnable{
 	private NoughtsCrossesGUI mainView;
 	
 	private static String gameMessage;
-	private ConcurrentMap<String, Observer> opponents;
+	private static ConcurrentMap<String, Observer> opponents;
 	
 	public ClientReciever(BufferedReader fromServer, PrintStream toServer, User user, Chat chat,NoughtsCrossesGUI mainView){
 		super();
@@ -47,7 +46,6 @@ public class ClientReciever extends Observable implements Runnable{
 	    		//Receive and handle requests appropriately
 	    		
     			String cont = getContents(message);
-    			System.out.println(message);
 	    		switch(getPrefix(message)){
 	    		case "message":
 	    			addMessage(cont);
@@ -66,6 +64,8 @@ public class ClientReciever extends Observable implements Runnable{
 	    					opponents.putIfAbsent(cont, opp);
 	    					ClientSender.addMessage("playGame: "+cont);
 	    				}
+	    			}else{
+	    				System.out.println("its still here");
 	    			}
 	    			break;
 	    		case "playGame":
@@ -74,16 +74,13 @@ public class ClientReciever extends Observable implements Runnable{
 					opponents.putIfAbsent(cont, opp);
 	    			break;
 	    		case "quit":
+	    			System.out.println("this switch is running");
+	    			upDateGames("quit: "+cont);
 	    			deleteObserver(opponents.get(cont));
 	    			opponents.remove(cont);
-	    			upDateGames("quit: "+cont);
 	    			break;
-	    		case "quiter":
-	    			opponents.remove(cont);
-	    			upDateGames("quit: "+cont);
-	    			ClientSender.addMessage("win: "+cont);
-	    			break;
-	    		case "":
+	    		case "gameUpdate":
+	    			upDateGames(message);
 	    			break;
 	    		}
 	    	
@@ -130,6 +127,11 @@ public class ClientReciever extends Observable implements Runnable{
 	private void addMessage(String message){
 		chat.addMessage(message);
 	}
+	
+	public static void removeOpponent(String opponent){
+		opponents.remove(opponents);
+	}
+	
 	public synchronized void upDateGames(String gameMessage){
 		
 		ClientReciever.gameMessage = gameMessage;

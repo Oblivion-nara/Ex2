@@ -39,16 +39,28 @@ public class ServerReciever extends Thread{
 					break;
 				case "connectToUser":
 				case "playGame":
-				case "quit":
 					aUser = getContents(message);
 					if(!aUser.equals(myUser)){
 						allClients.getQueue(aUser).offer(prefix+": "+myUser);
 					}
 					break;
-				case "win":
-					allClients.addScore(myUser);
+				case "quit":
+					aUser = getContents(message);
+					if(!aUser.equals(myUser)){
+						allClients.getQueue(aUser).offer(prefix+": "+myUser);
+						allClients.getQueue(myUser).offer(prefix+": "+aUser);
+						allClients.addScore(aUser);
+					}
 					break;
-				case "":
+				case "gameUpdate":
+					aUser = getUsername(getContents(message));
+					if(!aUser.equals(myUser)){
+						allClients.getQueue(aUser).offer(prefix+": "+myUser+": "+getContents(getContents(getContents(message))));
+					}
+					break;
+				case "won":
+					break;
+				case "draw":
 					break;
 				}
 				try {
@@ -93,6 +105,24 @@ public class ServerReciever extends Thread{
 			}
 		}
 		return message.substring(i);
+		
+	}
+	private String getUsername(String message){
+		
+		String user = "";
+		int spotted = 0;
+		for(int i = 0; i<message.length();i++){
+			char letter = message.charAt(i);
+			if(letter == ':' ){
+				if(spotted > 0){
+					break;
+				}
+				spotted++;
+			}
+
+			user += letter;
+		}
+		return user;
 		
 	}
 }

@@ -12,7 +12,7 @@ public class BoardView extends JPanel implements Observer
 	private NoughtsCrossesModel model;
 	private JButton[][] cell;
 	
-	public BoardView(NoughtsCrossesModel model)
+	public BoardView(NoughtsCrossesModel model,int turn)
 	{
 		super();
 		
@@ -34,25 +34,21 @@ public class BoardView extends JPanel implements Observer
 				final int x = i; final int y = j;
 				cell[i][j].addActionListener(e->model.turn(x, y));
 				cell[i][j].setFont(new Font("Verdana",Font.BOLD,50));
+				
+				if(turn != 1){
+					cell[i][j].setEnabled(false);
+				}
 				add(cell[i][j]);
 			}
 		}
 	}
-	public void remoteUpdate(String move){
-		
-		int x = Integer.parseInt(""+move.charAt(0));
-		int y = Integer.parseInt(""+move.charAt(2));
+	public void remoteUpdate(){
 
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 3; j++)
 			{
-				if(x == i && y == j){
-					
-					cell[i][j].setText(""+move.charAt(4));
-					cell[i][j].setEnabled(false);
-				
-				}else if(model.get(i, j) == NoughtsCrosses.CROSS)
+				if(model.get(i, j) == NoughtsCrosses.CROSS)
 				{
 					cell[i][j].setText("X");
 					cell[i][j].setEnabled(false);

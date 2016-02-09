@@ -5,7 +5,8 @@ public class NoughtsCrosses
 	public static final int BLANK = 0;
 	public static final int CROSS = 1;
 	public static final int NOUGHT = 2;
-		
+	public static int turnCount = 0;
+	
 	private boolean crossTurn;
 	private int[][] board;
 
@@ -54,6 +55,7 @@ Let the player whose turn it is play at a particular location
 */
 	public void turn(int i, int j)
 	{
+		turnCount++;
 		if(board[i][j] == BLANK)
 		{
 			if(crossTurn)

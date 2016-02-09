@@ -2,16 +2,18 @@ package game;
 
 import java.util.Observable;
 
+import ex2.ClientSender;
+
 public class NoughtsCrossesModel extends Observable
 {
 	private NoughtsCrosses oxo;
-	private int playerSymbol;
+	private String opponent;
 	
-	public NoughtsCrossesModel(NoughtsCrosses oxo,int playerSymbol)
+	public NoughtsCrossesModel(NoughtsCrosses oxo,String opponent)
 	{
 		super();
 		this.oxo = oxo;
-		this.playerSymbol = playerSymbol;
+		this.opponent = opponent;
 	}
 	
 /**
@@ -45,12 +47,17 @@ Let the player whose turn it is play at a particular location
 		oxo.turn(i, j);
 		setChanged();
 		notifyObservers();
+		ClientSender.addMessage("gameUpdate: "+opponent+": "+i+","+j);
+	}
+	public void remoteTurn(int i, int j)
+	{
+		oxo.turn(i, j);
 	}
 	
 		
 /**
 Determine who (if anyone) has won
-@return CROSS if cross has won, NOUGHT if nought has won, oetherwise BLANK
+@return CROSS if cross has won, NOUGHT if nought has won, otherwise BLANK
 */
 	public int whoWon()
 	{
