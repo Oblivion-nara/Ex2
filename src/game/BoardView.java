@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.util.Observer;
 import java.util.Observable;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 public class BoardView extends JPanel implements Observer
@@ -32,6 +33,7 @@ public class BoardView extends JPanel implements Observer
 				cell[i][j] = new JButton(" ");
 				final int x = i; final int y = j;
 				cell[i][j].addActionListener(e->model.turn(x, y));
+				cell[i][j].setFont(new Font("Verdana",Font.BOLD,50));
 				add(cell[i][j]);
 			}
 		}

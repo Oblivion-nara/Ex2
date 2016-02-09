@@ -19,7 +19,7 @@ public class ClientReciever extends Observable implements Runnable{
 	private NoughtsCrossesGUI mainView;
 	
 	private static String gameMessage;
-	private ArrayList<String> opponents;
+	private static ArrayList<String> opponents;
 	
 	public ClientReciever(BufferedReader fromServer, PrintStream toServer, User user, Chat chat,NoughtsCrossesGUI mainView){
 		super();
@@ -54,7 +54,8 @@ public class ClientReciever extends Observable implements Runnable{
 	    			break;
 	    		case "connectToUser":
 	    			if(!opponents.contains(cont)){
-	    				int i = JOptionPane.showConfirmDialog(mainView.getGui(),cont+" would like to play Tic Tac Toe \ndo you accept?"
+	    				int i = JOptionPane.showConfirmDialog(mainView.getGui(),cont+""
+	    						+ ", would like to play Tic Tac Toe \ndo you accept?"
 	    						,"Game Request",JOptionPane.YES_NO_OPTION);
 	    				if(i == JOptionPane.YES_OPTION){
 	    					addObserver(mainView.startGame(message));
@@ -69,8 +70,12 @@ public class ClientReciever extends Observable implements Runnable{
 	    			break;
 	    		case "quit":
 	    			opponents.remove(cont);
-	    			ClientSender.addMessage("win: "+cont);
 	    			upDateGames("quit: "+cont);
+	    			break;
+	    		case "quiter":
+	    			opponents.remove(cont);
+	    			upDateGames("quit: "+cont);
+	    			ClientSender.addMessage("win: "+cont);
 	    			break;
 	    		case "":
 	    			break;
@@ -88,6 +93,10 @@ public class ClientReciever extends Observable implements Runnable{
 			System.err.println("Somthing is breaking.");
 		}
 	    sender.interrupt();
+	}
+	
+	public static void removeOpponent(String opponent){
+		ClientReciever.opponents.remove(opponent);
 	}
 	
 	public static String getPrefix(String message){

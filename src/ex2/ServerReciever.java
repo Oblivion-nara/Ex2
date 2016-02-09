@@ -30,7 +30,6 @@ public class ServerReciever extends Thread{
 			
 				prefix = getPrefix(message);
 				String aUser = "";
-				System.out.println(message);
 				switch(prefix){
 				case "message":
 					allClients.sendToAll(message);
@@ -43,7 +42,6 @@ public class ServerReciever extends Thread{
 				case "quit":
 					aUser = getContents(message);
 					if(!aUser.equals(myUser)){
-						System.out.println(prefix+": "+myUser);
 						allClients.getQueue(aUser).offer(prefix+": "+myUser);
 					}
 					break;

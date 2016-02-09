@@ -33,12 +33,13 @@ public class NoughtsCrossesGUI
 		NoughtsCrosses game = new NoughtsCrosses();
 		NoughtsCrossesComponent comp = new NoughtsCrossesComponent(game,start_opponent);
 		
-		JFrame frame = new JFrame("XOX against "+start_opponent);
+		JFrame frame = new JFrame("XOX against "+ClientReciever.getContents(start_opponent));
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 
-				ClientSender.addMessage("quit: "+ClientReciever.getContents(start_opponent));
+				ClientSender.addMessage("quiter: "+ClientReciever.getContents(start_opponent));
+				ClientReciever.removeOpponent(ClientReciever.getContents(start_opponent));
 		    	frame.dispose();
 		        
 		    }
