@@ -44,6 +44,7 @@ public class ClientReciever extends Observable implements Runnable{
 	    		//Receive and handle requests appropriately
 	    		
     			String cont = getContents(message);
+    			System.out.println(message);
 	    		switch(getPrefix(message)){
 	    		case "message":
 	    			addMessage(cont);
@@ -68,7 +69,8 @@ public class ClientReciever extends Observable implements Runnable{
 	    			break;
 	    		case "quit":
 	    			opponents.remove(cont);
-	    			ClientSender.addMessage("win");
+	    			ClientSender.addMessage("win: "+cont);
+	    			upDateGames("quit: "+cont);
 	    			break;
 	    		case "":
 	    			break;
@@ -125,7 +127,7 @@ public class ClientReciever extends Observable implements Runnable{
 		
 	}
 	
-	public static synchronized String getMessage(){
+	public static synchronized String getGameUpdate(){
 		return gameMessage;
 	}
 	

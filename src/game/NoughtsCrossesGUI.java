@@ -8,15 +8,15 @@ import javax.swing.JFrame;
 import ex2.ClientReciever;
 import ex2.ClientSender;
 import ex2.User;
-import gui.Gui;
+import gui.MainView;
 
 public class NoughtsCrossesGUI 
 {
 	private JFrame frame;
-	private Gui lobby;
+	private MainView lobby;
 	public NoughtsCrossesGUI(User user)
 	{
-		lobby = new Gui();
+		lobby = new MainView();
 		
 		frame = new JFrame("Noughts and Crosses, User: "+user.toString());
 	    frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -43,6 +43,7 @@ public class NoughtsCrossesGUI
 		        
 		    }
 		});
+		
 	    frame.setSize(500, 600);
 	    frame.setLocation(new Point(500,200));
 	    frame.setResizable(false);
@@ -53,7 +54,7 @@ public class NoughtsCrossesGUI
 	public void close (){
 		frame.dispose();
 	}
-	public Gui getGui(){
+	public MainView getGui(){
 		return lobby;
 	}
 	public void refresh(String data){

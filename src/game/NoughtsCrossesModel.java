@@ -65,4 +65,5 @@ Start a new game
 		setChanged();
 		notifyObservers();
 	}
+	
 }
