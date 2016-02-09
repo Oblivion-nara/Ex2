@@ -7,14 +7,13 @@ import javax.swing.JFrame;
 
 import ex2.ClientReciever;
 import ex2.ClientSender;
-import ex2.User;
 import gui.MainView;
 
 public class NoughtsCrossesGUI 
 {
 	private JFrame frame;
 	private MainView lobby;
-	public NoughtsCrossesGUI(User user)
+	public NoughtsCrossesGUI(String user)
 	{
 		lobby = new MainView();
 		

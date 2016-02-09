@@ -8,6 +8,7 @@ import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import game.NoughtsCrossesGUI;
@@ -23,7 +24,7 @@ public class ClientReciever extends Observable implements Runnable{
 	private static String gameMessage;
 	private static ConcurrentMap<String, Observer> opponents;
 	
-	public ClientReciever(BufferedReader fromServer, PrintStream toServer, User user, Chat chat,NoughtsCrossesGUI mainView){
+	public ClientReciever(BufferedReader fromServer, PrintStream toServer, String user, Chat chat,NoughtsCrossesGUI mainView){
 		super();
 		this.fromServer = fromServer;
 		this.chat = chat;
@@ -64,8 +65,6 @@ public class ClientReciever extends Observable implements Runnable{
 	    					opponents.putIfAbsent(cont, opp);
 	    					ClientSender.addMessage("playGame: "+cont);
 	    				}
-	    			}else{
-	    				System.out.println("its still here");
 	    			}
 	    			break;
 	    		case "playGame":
@@ -74,13 +73,25 @@ public class ClientReciever extends Observable implements Runnable{
 					opponents.putIfAbsent(cont, opp);
 	    			break;
 	    		case "quit":
-	    			System.out.println("this switch is running");
 	    			upDateGames("quit: "+cont);
+	    			deleteObserver(opponents.get(cont));
+	    			opponents.remove(cont);
+	    			break;
+	    		case "quitter":
+	    			upDateGames("quitter: "+cont);
 	    			deleteObserver(opponents.get(cont));
 	    			opponents.remove(cont);
 	    			break;
 	    		case "gameUpdate":
 	    			upDateGames(message);
+	    			break;
+	    		case "won":
+	    			JOptionPane.showConfirmDialog(((JFrame)opponents.get(cont)).getRootPane().getComponent(0), "You win", "You win", JOptionPane.OK_CANCEL_OPTION,
+							JOptionPane.OK_CANCEL_OPTION);
+	    			break;
+	    		case "draw":
+	    			JOptionPane.showConfirmDialog(((JFrame)opponents.get(cont)).getRootPane().getComponent(0), "The game was a draw", "Drawn", JOptionPane.OK_CANCEL_OPTION,
+							JOptionPane.OK_CANCEL_OPTION);
 	    			break;
 	    		}
 	    	

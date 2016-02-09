@@ -57,6 +57,16 @@ public class NoughtsCrossesComponent extends JPanel implements Observer {
 
 			}
 			break;
+		case "quitter":
+			if (ClientReciever.getContents(message).equals(opponent)) {
+
+				JOptionPane.showConfirmDialog(this, "You quit the game with "+opponent, "You Lose",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.OK_CANCEL_OPTION);
+				ClientReciever.removeOpponent(opponent);
+				((JFrame) SwingUtilities.getRoot(this)).dispose();
+
+			}
+			break;
 		case "gameUpdate":
 
 			if (getUsername(ClientReciever.getContents(message)).equals(opponent)) {

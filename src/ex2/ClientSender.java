@@ -7,13 +7,13 @@ import javax.sound.midi.Transmitter;
 
 public class ClientSender extends Thread {
 
-	public static User myUser;
+	public static String myUser;
 	private PrintStream toServer;
 	
 	private static ArrayList<String> message;
 	private static boolean transmit;  
 
-	public ClientSender(PrintStream toServer, User myUser) {
+	public ClientSender(PrintStream toServer, String myUser) {
 		super();
 		this.toServer = toServer;
 		ClientSender.myUser = myUser;

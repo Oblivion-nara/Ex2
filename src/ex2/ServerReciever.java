@@ -48,7 +48,7 @@ public class ServerReciever extends Thread{
 					aUser = getContents(message);
 					if(!aUser.equals(myUser)){
 						allClients.getQueue(aUser).offer(prefix+": "+myUser);
-						allClients.getQueue(myUser).offer(prefix+": "+aUser);
+						allClients.getQueue(myUser).offer("quitter: "+aUser);
 						allClients.addScore(aUser);
 					}
 					break;
@@ -59,8 +59,11 @@ public class ServerReciever extends Thread{
 					}
 					break;
 				case "won":
-					break;
 				case "draw":
+					aUser = getContents(message);
+					if(!aUser.equals(myUser)){
+						allClients.getQueue(aUser).offer(prefix+": "+myUser);
+					}
 					break;
 				}
 				try {

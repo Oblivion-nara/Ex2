@@ -37,7 +37,7 @@ public class Client {
 		PrintStream toServer = null;
 		Socket server = null;
 
-		User user = null;
+		String user = null;
 		
 		try {
 			server = new Socket(hostname, portnumber);
@@ -45,7 +45,7 @@ public class Client {
 			fromServer = new BufferedReader(new InputStreamReader(server.getInputStream()));
 			
 			toServer.println(username);
-			user = User.toUser(fromServer.readLine());
+			user = fromServer.readLine();
 			
 		} catch (UnknownHostException e) {
 			System.err.println("Unknown host: " + hostname);
