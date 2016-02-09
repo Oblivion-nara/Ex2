@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.swing.JOptionPane;
 
@@ -19,7 +22,7 @@ public class ClientReciever extends Observable implements Runnable{
 	private NoughtsCrossesGUI mainView;
 	
 	private static String gameMessage;
-	private ArrayList<String> opponents;
+	private ConcurrentMap<String, Observer> opponents;
 	
 	public ClientReciever(BufferedReader fromServer, PrintStream toServer, User user, Chat chat,NoughtsCrossesGUI mainView){
 		super();
@@ -36,7 +39,7 @@ public class ClientReciever extends Observable implements Runnable{
 	    sender.start();
 	    String message = "";
 	    gameMessage = "";
-	    opponents = new ArrayList<String>();
+	    opponents = new ConcurrentHashMap<String, Observer>();
 	    try{
 
 	    	do{
@@ -52,23 +55,32 @@ public class ClientReciever extends Observable implements Runnable{
 	    			mainView.refresh(cont);
 	    			break;
 	    		case "connectToUser":
-	    			if(!opponents.contains(cont)){
-	    				int i = JOptionPane.showConfirmDialog(mainView.getGui(),cont+" would like to play Tic Tac Toe \ndo you accept?"
+	    			if(!opponents.containsKey(cont)){
+	    				int i = JOptionPane.showConfirmDialog(mainView.getGui(),cont+""
+	    						+ ", would like to play Tic Tac Toe \ndo you accept?"
 	    						,"Game Request",JOptionPane.YES_NO_OPTION);
 	    				if(i == JOptionPane.YES_OPTION){
-	    					addObserver(mainView.startGame(message));
+	    					Observer opp = mainView.startGame(message);
+	    					addObserver(opp);
+	    					opponents.putIfAbsent(cont, opp);
 	    					ClientSender.addMessage("playGame: "+cont);
 	    				}
-	    				opponents.add(cont);
 	    			}
 	    			break;
 	    		case "playGame":
-    				opponents.add(cont);
-    				addObserver(mainView.startGame(message));
+					Observer opp = mainView.startGame(message);
+					addObserver(opp);
+					opponents.putIfAbsent(cont, opp);
 	    			break;
 	    		case "quit":
+	    			deleteObserver(opponents.get(cont));
 	    			opponents.remove(cont);
-	    			ClientSender.addMessage("win");
+	    			upDateGames("quit: "+cont);
+	    			break;
+	    		case "quiter":
+	    			opponents.remove(cont);
+	    			upDateGames("quit: "+cont);
+	    			ClientSender.addMessage("win: "+cont);
 	    			break;
 	    		case "":
 	    			break;
@@ -86,6 +98,10 @@ public class ClientReciever extends Observable implements Runnable{
 			System.err.println("Somthing is breaking.");
 		}
 	    sender.interrupt();
+	}
+	
+	public static void removeOpponent(String opponent){
+		ClientReciever.opponents.remove(opponent);
 	}
 	
 	public static String getPrefix(String message){
@@ -125,7 +141,7 @@ public class ClientReciever extends Observable implements Runnable{
 		
 	}
 	
-	public static synchronized String getMessage(){
+	public static synchronized String getGameUpdate(){
 		return gameMessage;
 	}
 	

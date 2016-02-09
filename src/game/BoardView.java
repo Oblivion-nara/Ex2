@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.util.Observer;
 import java.util.Observable;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 public class BoardView extends JPanel implements Observer
@@ -32,9 +33,46 @@ public class BoardView extends JPanel implements Observer
 				cell[i][j] = new JButton(" ");
 				final int x = i; final int y = j;
 				cell[i][j].addActionListener(e->model.turn(x, y));
+				cell[i][j].setFont(new Font("Verdana",Font.BOLD,50));
 				add(cell[i][j]);
 			}
 		}
+	}
+	public void remoteUpdate(String move){
+		
+		int x = Integer.parseInt(""+move.charAt(0));
+		int y = Integer.parseInt(""+move.charAt(2));
+
+		for(int i = 0; i < 3; i++)
+		{
+			for(int j = 0; j < 3; j++)
+			{
+				if(x == i && y == j){
+					
+					cell[i][j].setText(""+move.charAt(4));
+					cell[i][j].setEnabled(false);
+				
+				}else if(model.get(i, j) == NoughtsCrosses.CROSS)
+				{
+					cell[i][j].setText("X");
+					cell[i][j].setEnabled(false);
+				}
+				else if(model.get(i, j) == NoughtsCrosses.NOUGHT)
+				{
+					cell[i][j].setText("O");
+					cell[i][j].setEnabled(false);
+				}
+				else
+				{
+					cell[i][j].setText(" ");
+					boolean notOver = (model.whoWon() ==
+						NoughtsCrosses.BLANK);
+					cell[i][j].setEnabled(notOver);
+				}
+			}
+		}
+		repaint();
+		
 	}
 	
 	public void update(Observable obs, Object obj)
@@ -62,7 +100,7 @@ public class BoardView extends JPanel implements Observer
 					cell[i][j].setText(" ");
 					boolean notOver = (model.whoWon() ==
 						NoughtsCrosses.BLANK);
-					cell[i][j].setEnabled(notOver);
+					cell[i][j].setEnabled(false);
 				}
 			}
 		}
